@@ -1,0 +1,81 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
+    <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+        <li data-target="#myCarousel" data-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner" role="listbox">
+        <div class="item active">
+            <img src="~/images/banner1.svg" alt="Banner1" class="img-responsive" />
+        </div>
+        <div class="item">
+            <img src="~/images/banner2.svg" alt="Banner2" class="img-responsive" />
+        </div>
+        <div class="item">
+            <img src="~/images/banner3.svg" alt="Banner3" class="img-responsive" />
+        </div>
+    </div>
+    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+<div class="container">
+    <h3 class="page-header col-lg-12">Featured Items</h3>
+    <div class="row featuredItems">
+        @{
+            bool alreadyDisplayed = false;
+            int categoryDisplayed = 0;
+            int categoryToBeDisplayed = 4; // only display 4 categories
+            List<Product> displayedItems = new List<Product>();
+            foreach (var category in Model.Categories)
+            {
+                foreach (var item in Model.Products)
+                {
+                    alreadyDisplayed = false;
+                    if (item.CategoryID == category.CategoryID)
+                    {
+                        // for future upgrade, need to check whether is the featured item
+                        // check whether the item has been displayed ( this is for the potential upgrade to the multi-category of an item)
+                        foreach (var dispalyedItem in displayedItems)
+                        {
+                            if (dispalyedItem.ItemID == item.ItemID)
+                            {
+                                alreadyDisplayed = true;
+                                break;
+                            }
+                        }
+                        // if has been displayed then display the item
+                        if (alreadyDisplayed == false)
+                        {
+                            <div class="col-md-3 text-center">
+                                <a asp-controller="Product" asp-action="Details" asp-route-id="@item.ItemID">
+                                    <img src="~/images/@item.FilePath" alt="">
+                                </a>
+                                <br />
+                                <br />
+                                <a class="btn btn-default" asp-controller="Product" asp-action="IndexForCustomer" asp-route-id="@category.CategoryID">More @category.Name Products <span><i class="fa fa-angle-double-right" aria-hidden="true"></i></span></a>
+                            </div>
+                            displayedItems.Add(item);
+                            // only display one featured item under one category
+                            categoryDisplayed++;
+                            break;
+                        }
+                    }
+                }
+                if (categoryDisplayed >= categoryToBeDisplayed)
+                {
+                    break;
+                }
+            }
+        }
+    </div>
+</div>

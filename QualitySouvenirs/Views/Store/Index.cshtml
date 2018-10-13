@@ -1,0 +1,86 @@
+﻿@model PaginatedList<QualitySouvenirs.Models.Product>
+
+@{
+    ViewData["Title"] = "Products";
+}
+
+<h2>Our Products</h2>
+
+@*<div class="col-md-offset-3 col-md-9" style="text-align:right">
+        <form asp-action="Index" method="get">
+            <div class="form-actions no-color">
+                <p>
+                    <input type="text" style="width:200px;" name="SearchString" placeholder="Find by name" value="@ViewData["currentFilter"]" />
+                    <input type="submit" value="Search" class="btn btn-default" /> |
+                </p>
+            </div>
+        </form>
+    </div>*@
+<div class="col-md-3">
+    <div class="list-group" id="categories">
+        <a class="list-group-item" asp-action="Index" asp-route-id="">All Categories</a>
+        @{
+            List<QualitySouvenirs.Models.Category> categories = ViewBag.Categories;
+            foreach (var category in categories)
+            {
+                <a class="list-group-item" asp-action="Index" asp-route-id="@category.CategoryID">@category.Name</a>
+            }
+        }
+    </div>
+</div>
+
+<div class="col-md-9">
+    @foreach (var item in Model)
+    {
+        var imgUrl = @Href("~" + item.FilePath);
+        var errImg = @Href("~/missing.jpg");
+
+        <div class="col-md-2 col-m put_center">
+            <!-- Item -->
+            <div style="width: 154px; height:180px; display:table; background:#efefef; margin: 0 auto;">
+                <div style="display:table-cell; vertical-align: middle; ">
+                    <a asp-action="Details" asp-route-id="@item.ItemID" class="offer-img">
+                        <img class="img-responsive" style="max-width: 154px; max-height:180px;" src="@imgUrl" alt="Bag Image" onerror="this.onerror = null; this.src = '@errImg'">
+                    </a>
+                </div>
+            </div>
+            <div class="mid-1">
+                <div>
+                    <h5><a asp-action="Details" asp-route-id="@item.ItemID">@Html.DisplayFor(modelItem => item.ItemName)</a></h5>
+                    <h6>Category: @Html.DisplayFor(modelItem => item.Category.Name)</h6>
+                    <h4>@Html.DisplayFor(modelItem => item.Price)</h4>
+                </div>
+                @*<div>
+                        <a class="btn-primary btn raised" asp-action="AddToCart" asp-controller="ShoppingCart" asp-route-id="@item.ItemID">Add to Cart</a>
+                    </div>*@
+            </div>
+        </div>
+    }
+</div>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+<br />
+<br />
+
+<div class="col-md-8 col-lg-offset-3" style="text-align:left">
+    <a asp-action="Index"
+       asp-route-page="@(Model.PageIndex - 1)"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn btn-default @prevDisabled btn">
+        <span class="glyphicon glyphicon-step-backward"></span>Previous
+    </a>
+</div>
+<div class="col-md-1" style="text-align:right">
+    <a asp-action="Index"
+       asp-route-page="@(Model.PageIndex + 1)"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn btn-default @nextDisabled btn">
+        Next<span class="glyphicon glyphicon-step-forward"></span>
+    </a>
+</div>
+
+<div class="clearfix"></div>
+@*  *@

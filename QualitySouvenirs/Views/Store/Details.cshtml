@@ -1,0 +1,48 @@
+﻿@model QualitySouvenirs.Models.Product
+
+@{
+    ViewData["Title"] = "Product Detail";
+    var imgUrl = @Href("~" + Model.FilePath);
+    var errImg = @Href("~/missing.jpg");
+}
+
+<h2>Product Detail</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ItemID)
+        </dt>
+        <dd>
+            <p>@Html.DisplayFor(model => model.ItemID)</p>
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ItemName)
+        </dt>
+        <dd>
+            <p>@Html.DisplayFor(model => model.ItemName)</p>
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            <p>@Html.DisplayFor(model => model.Description)</p>
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd>
+            <p>@Html.DisplayFor(model => model.Price)</p>
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FilePath)
+        </dt>
+        <dd>
+            <img class="img-responsive" style="max-width: 300px;" src="@imgUrl" alt="Bag Image" onerror="this.onerror = null; this.src = '@errImg'">
+        </dd>
+    </dl>
+</div>
+<div>
+    <a class="btn btn-default" asp-action="Index">Back to List</a>
+</div>
