@@ -6,14 +6,16 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using QualitySouvenirs.Data;
 using QualitySouvenirs.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace QualitySouvenirs
 {
@@ -29,9 +31,11 @@ namespace QualitySouvenirs
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDbContext<QualitySouvenirsContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<QualitySouvenirsContext>(options =>
+options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -64,23 +68,22 @@ namespace QualitySouvenirs
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public async void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider, UserManager<ApplicationUser> userManager)
+        public async void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
         {
-            app.UseSession();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+                app.UseHsts();
             }
 
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseAuthentication();
+            app.UseCookiePolicy();
 
             app.UseMvc(routes =>
             {
@@ -89,7 +92,7 @@ namespace QualitySouvenirs
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            await CreateRoles(serviceProvider); //Week 7
+            await CreateRoles(serviceProvider);
         }
 
         public async Task CreateRoles(IServiceProvider serviceProvider)

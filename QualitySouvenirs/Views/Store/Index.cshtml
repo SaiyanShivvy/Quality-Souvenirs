@@ -32,7 +32,7 @@
 <div class="col-md-9">
     @foreach (var item in Model)
     {
-        var imgUrl = @Href("~" + item.FilePath);
+        var imgUrl = @Href("~/" + item.FilePath);
         var errImg = @Href("~/missing.jpg");
 
         <div class="col-md-2 col-m put_center">
@@ -40,7 +40,7 @@
             <div style="width: 154px; height:180px; display:table; background:#efefef; margin: 0 auto;">
                 <div style="display:table-cell; vertical-align: middle; ">
                     <a asp-action="Details" asp-route-id="@item.ItemID" class="offer-img">
-                        <img class="img-responsive" style="max-width: 154px; max-height:180px;" src="@imgUrl" alt="Bag Image" onerror="this.onerror = null; this.src = '@errImg'">
+                        <img class="img-responsive" style="max-width: 154px; max-height:180px;" src="@imgUrl" alt="@item.ItemName" onerror="this.onerror = null; this.src = '@errImg'">
                     </a>
                 </div>
             </div>

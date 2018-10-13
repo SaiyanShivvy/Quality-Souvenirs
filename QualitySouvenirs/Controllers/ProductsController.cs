@@ -50,7 +50,7 @@ namespace QualitySouvenirs.Controllers
         public IActionResult Create()
         {
             ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "Name");
-            ViewData["SupplierID"] = new SelectList(_context.Suppliers, "SupplierID", "EmailAddress");
+            ViewData["SupplierID"] = new SelectList(_context.Suppliers, "SupplierID", "Name");
             return View();
         }
 
