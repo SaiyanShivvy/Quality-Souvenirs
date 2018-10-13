@@ -14,8 +14,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using QualitySouvenirs.Data;
 using QualitySouvenirs.Models;
+using QualitySouvenirs.Services;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace QualitySouvenirs
 {

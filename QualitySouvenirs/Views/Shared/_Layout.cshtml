@@ -32,9 +32,25 @@
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Store" asp-action="Index">Products</a></li>
-                    <li><a asp-area="" asp-controller="Products" asp-action="Index">Manage Products</a></li>
+                    <li><a asp-area="" asp-controller="Categories" asp-action="Index">Categories</a></li>
+                    <li><a asp-area="" asp-controller="Suppliers" asp-action="Index">Suppliers</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li><a asp-area="" asp-controller="Products" asp-action="Index">Manage Products</a></li>
+                    }
+                    else
+                    {
+
+                    }
+
+                    @*Week 7*@
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li><a asp-area="" asp-controller="AdminApplicationUsers" asp-action="Index">Members</a></li>
+                        <li><a asp-area="" asp-controller="Orders" asp-action="Index">Orders</a></li>
+                    }
                 </ul>
                 <partial name="_LoginPartial" />
             </div>
