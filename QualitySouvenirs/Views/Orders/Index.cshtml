@@ -31,30 +31,29 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Date)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.OrderStatus)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.GST)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.GrandTotal)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SubTotal)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.OrderID">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.OrderID">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.OrderID">Delete</a>
-                </td>
-            </tr>
-        }
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GST)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GrandTotal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SubTotal)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.OrderID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.OrderID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.OrderID">Delete</a>
+            </td>
+        </tr>
+}
     </tbody>
 </table>

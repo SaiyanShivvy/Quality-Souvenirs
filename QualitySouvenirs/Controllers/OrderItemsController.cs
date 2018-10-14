@@ -6,25 +6,26 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QualitySouvenirs.Data;
+using QualitySouvenirs.Models;
 
-namespace QualitySouvenirs.Models
+namespace QualitySouvenirs.Controllers
 {
-    public class OrdersController : Controller
+    public class OrderItemsController : Controller
     {
         private readonly QualitySouvenirsContext _context;
 
-        public OrdersController(QualitySouvenirsContext context)
+        public OrderItemsController(QualitySouvenirsContext context)
         {
             _context = context;
         }
 
-        // GET: Orders
+        // GET: OrderItems
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Orders.ToListAsync());
+            return View(await _context.OrderItems.ToListAsync());
         }
 
-        // GET: Orders/Details/5
+        // GET: OrderItems/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -32,39 +33,39 @@ namespace QualitySouvenirs.Models
                 return NotFound();
             }
 
-            var order = await _context.Orders
-                .FirstOrDefaultAsync(m => m.OrderID == id);
-            if (order == null)
+            var orderItem = await _context.OrderItems
+                .FirstOrDefaultAsync(m => m.OrderItemID == id);
+            if (orderItem == null)
             {
                 return NotFound();
             }
 
-            return View(order);
+            return View(orderItem);
         }
 
-        // GET: Orders/Create
+        // GET: OrderItems/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Orders/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
+        // POST: OrderItems/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("OrderID,Date,OrderStatus,GST,GrandTotal,SubTotal")] Order order)
+        public async Task<IActionResult> Create([Bind("OrderItemID,Quantity,OrderItemPrice")] OrderItem orderItem)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(order);
+                _context.Add(orderItem);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(order);
+            return View(orderItem);
         }
 
-        // GET: Orders/Edit/5
+        // GET: OrderItems/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -72,22 +73,22 @@ namespace QualitySouvenirs.Models
                 return NotFound();
             }
 
-            var order = await _context.Orders.FindAsync(id);
-            if (order == null)
+            var orderItem = await _context.OrderItems.FindAsync(id);
+            if (orderItem == null)
             {
                 return NotFound();
             }
-            return View(order);
+            return View(orderItem);
         }
 
-        // POST: Orders/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
+        // POST: OrderItems/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("OrderID,Date,OrderStatus,GST,GrandTotal,SubTotal")] Order order)
+        public async Task<IActionResult> Edit(int id, [Bind("OrderItemID,Quantity,OrderItemPrice")] OrderItem orderItem)
         {
-            if (id != order.OrderID)
+            if (id != orderItem.OrderItemID)
             {
                 return NotFound();
             }
@@ -96,12 +97,12 @@ namespace QualitySouvenirs.Models
             {
                 try
                 {
-                    _context.Update(order);
+                    _context.Update(orderItem);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!OrderExists(order.OrderID))
+                    if (!OrderItemExists(orderItem.OrderItemID))
                     {
                         return NotFound();
                     }
@@ -112,10 +113,10 @@ namespace QualitySouvenirs.Models
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(order);
+            return View(orderItem);
         }
 
-        // GET: Orders/Delete/5
+        // GET: OrderItems/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -123,30 +124,30 @@ namespace QualitySouvenirs.Models
                 return NotFound();
             }
 
-            var order = await _context.Orders
-                .FirstOrDefaultAsync(m => m.OrderID == id);
-            if (order == null)
+            var orderItem = await _context.OrderItems
+                .FirstOrDefaultAsync(m => m.OrderItemID == id);
+            if (orderItem == null)
             {
                 return NotFound();
             }
 
-            return View(order);
+            return View(orderItem);
         }
 
-        // POST: Orders/Delete/5
+        // POST: OrderItems/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var order = await _context.Orders.FindAsync(id);
-            _context.Orders.Remove(order);
+            var orderItem = await _context.OrderItems.FindAsync(id);
+            _context.OrderItems.Remove(orderItem);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool OrderExists(int id)
+        private bool OrderItemExists(int id)
         {
-            return _context.Orders.Any(e => e.OrderID == id);
+            return _context.OrderItems.Any(e => e.OrderItemID == id);
         }
     }
 }

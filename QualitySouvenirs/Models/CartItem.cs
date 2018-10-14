@@ -8,11 +8,10 @@ namespace QualitySouvenirs.Models
 {
     public class CartItem
     {
-        [Key]
-        public int ID { get; set; }
-
         public string CartID { get; set; }
-        public int Count { get; set; }
+        public int CartItemID { get; set; }
+        public int ItemCount { get; set; }
         public DateTime DateCreated { get; set; }
+        public Product Product;
     }
 }
