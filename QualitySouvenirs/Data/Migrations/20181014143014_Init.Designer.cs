@@ -10,8 +10,8 @@ using QualitySouvenirs.Data;
 namespace QualitySouvenirs.Migrations
 {
     [DbContext(typeof(QualitySouvenirsContext))]
-    [Migration("20181013074116_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20181014143014_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -67,6 +67,23 @@ namespace QualitySouvenirs.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ApplicationUser");
+                });
+
+            modelBuilder.Entity("QualitySouvenirs.Models.CartItem", b =>
+                {
+                    b.Property<int>("CartItemID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CartID");
+
+                    b.Property<DateTime>("DateCreated");
+
+                    b.Property<int>("ItemCount");
+
+                    b.HasKey("CartItemID");
+
+                    b.ToTable("CartItem");
                 });
 
             modelBuilder.Entity("QualitySouvenirs.Models.Category", b =>
@@ -129,7 +146,7 @@ namespace QualitySouvenirs.Migrations
 
                     b.HasIndex("ProductItemID");
 
-                    b.ToTable("OrderItems");
+                    b.ToTable("OrderDetail");
                 });
 
             modelBuilder.Entity("QualitySouvenirs.Models.Product", b =>
@@ -161,6 +178,16 @@ namespace QualitySouvenirs.Migrations
                     b.HasIndex("SupplierID");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("QualitySouvenirs.Models.ShoppingCart", b =>
+                {
+                    b.Property<string>("ShoppingCartID")
+                        .ValueGeneratedOnAdd();
+
+                    b.HasKey("ShoppingCartID");
+
+                    b.ToTable("ShoppingCart");
                 });
 
             modelBuilder.Entity("QualitySouvenirs.Models.Supplier", b =>
@@ -197,7 +224,8 @@ namespace QualitySouvenirs.Migrations
                 {
                     b.HasOne("QualitySouvenirs.Models.Order", "Order")
                         .WithMany("OrderItems")
-                        .HasForeignKey("OrderID");
+                        .HasForeignKey("OrderID")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("QualitySouvenirs.Models.Product", "Product")
                         .WithMany("OrderLines")

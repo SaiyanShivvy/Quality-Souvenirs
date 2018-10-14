@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QualitySouvenirs.Data;
 
 namespace QualitySouvenirs.Migrations
 {
     [DbContext(typeof(QualitySouvenirsContext))]
-    partial class QualitySouvenirsContextModelSnapshot : ModelSnapshot
+    [Migration("20181014145308_SecMig")]
+    partial class SecMig
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

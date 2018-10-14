@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace QualitySouvenirs.Migrations.ApplicationDb
 {
-    public partial class InitialCreate : Migration
+    public partial class Initadb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

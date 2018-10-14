@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace QualitySouvenirs.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -39,6 +39,21 @@ namespace QualitySouvenirs.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CartItem",
+                columns: table => new
+                {
+                    CartID = table.Column<string>(nullable: true),
+                    CartItemID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ItemCount = table.Column<int>(nullable: false),
+                    DateCreated = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CartItem", x => x.CartItemID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Categories",
                 columns: table => new
                 {
@@ -49,6 +64,17 @@ namespace QualitySouvenirs.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categories", x => x.CategoryID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ShoppingCart",
+                columns: table => new
+                {
+                    ShoppingCartID = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ShoppingCart", x => x.ShoppingCartID);
                 });
 
             migrationBuilder.CreateTable(
@@ -122,7 +148,7 @@ namespace QualitySouvenirs.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OrderItems",
+                name: "OrderDetail",
                 columns: table => new
                 {
                     OrderItemID = table.Column<int>(nullable: false)
@@ -134,15 +160,15 @@ namespace QualitySouvenirs.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderItems", x => x.OrderItemID);
+                    table.PrimaryKey("PK_OrderDetail", x => x.OrderItemID);
                     table.ForeignKey(
-                        name: "FK_OrderItems_Orders_OrderID",
+                        name: "FK_OrderDetail_Orders_OrderID",
                         column: x => x.OrderID,
                         principalTable: "Orders",
                         principalColumn: "OrderID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_OrderItems_Products_ProductItemID",
+                        name: "FK_OrderDetail_Products_ProductItemID",
                         column: x => x.ProductItemID,
                         principalTable: "Products",
                         principalColumn: "ItemID",
@@ -150,13 +176,13 @@ namespace QualitySouvenirs.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderItems_OrderID",
-                table: "OrderItems",
+                name: "IX_OrderDetail_OrderID",
+                table: "OrderDetail",
                 column: "OrderID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderItems_ProductItemID",
-                table: "OrderItems",
+                name: "IX_OrderDetail_ProductItemID",
+                table: "OrderDetail",
                 column: "ProductItemID");
 
             migrationBuilder.CreateIndex(
@@ -178,7 +204,13 @@ namespace QualitySouvenirs.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "OrderItems");
+                name: "CartItem");
+
+            migrationBuilder.DropTable(
+                name: "OrderDetail");
+
+            migrationBuilder.DropTable(
+                name: "ShoppingCart");
 
             migrationBuilder.DropTable(
                 name: "Orders");
