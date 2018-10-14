@@ -50,9 +50,9 @@
                     <h6>Category: @Html.DisplayFor(modelItem => item.Category.Name)</h6>
                     <h4>@Html.DisplayFor(modelItem => item.Price)</h4>
                 </div>
-                @*<div>
-                        <a class="btn-primary btn raised" asp-action="AddToCart" asp-controller="ShoppingCart" asp-route-id="@item.ItemID">Add to Cart</a>
-                    </div>*@
+                <div>
+                    <a class="btn-primary btn raised" asp-action="AddToCart" asp-controller="ShoppingCart" asp-route-id="@item.ItemID">Add to Cart</a>
+                </div>
             </div>
         </div>
     }

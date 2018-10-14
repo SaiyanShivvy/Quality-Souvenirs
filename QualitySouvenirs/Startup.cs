@@ -55,6 +55,9 @@ options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddMvc()
+                .AddSessionStateTempDataProvider();
+            services.AddSession();
 
             services.AddMvc();
         }
@@ -84,6 +87,8 @@ options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseCookiePolicy();
+
+            app.UseSession();
 
             app.UseMvc(routes =>
             {

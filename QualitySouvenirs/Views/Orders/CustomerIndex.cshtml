@@ -1,0 +1,79 @@
+@model IEnumerable<QualitySouvenirs.Models.Order>
+@using Microsoft.AspNetCore.Identity
+
+@{
+    ViewData["Title"] = "Order List";
+}
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{var user = UserManager.GetUserAsync(User).Result;}
+
+<h2>Order List</h2>
+
+@if (Model.Count() < 1)
+{
+    <hr />
+    <h3>You have no orders.</h3>
+
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.OrderID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Date)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SubTotal)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.GST)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.GrandTotal)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OrderStatus)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                if (item.User.Id == user.Id)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OrderID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Date)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SubTotal)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.GST)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.GrandTotal)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OrderStatus)
+                        </td>
+                        <td>
+                            <a asp-action="CustomerDetails" asp-route-id="@item.OrderID">Details</a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+}

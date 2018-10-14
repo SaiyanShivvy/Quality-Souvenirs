@@ -1,0 +1,101 @@
+@model QualitySouvenirs.Models.Order
+
+@{
+    ViewData["Title"] = "Order Details";
+}
+
+<h2>Order Details</h2>
+
+<div>
+    <h4>Order</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>@Html.DisplayNameFor(model => model.OrderID)</dt>
+        <dd>@Html.DisplayFor(model => model.OrderID)</dd>
+
+        <dt>@Html.DisplayNameFor(model => model.Date)</dt>
+        <dd>@Html.DisplayFor(model => model.Date)</dd>
+
+        <dt>Order Status</dt>
+        <dd>@Html.DisplayFor(model => model.OrderStatus)</dd>
+
+        <dt>Full Name</dt>
+        <dd>@Html.DisplayFor(model => model.User.FirstName) @Html.DisplayFor(model => model.User.LastName) </dd>
+
+        <dt>@Html.DisplayNameFor(model => model.User.Email)</dt>
+        <dd>@Html.DisplayFor(model => model.User.Email)</dd>
+
+        <dt>Mobile Phone Number</dt>
+        <dd>@Html.DisplayFor(model => model.User.MobilePhoneNumber)</dd>
+
+        <dt>@Html.DisplayNameFor(model => model.User.Address)</dt>
+        <dd>@Html.DisplayFor(model => model.User.Address)</dd>
+    </dl>
+
+    <table class="table">
+        <tr>
+            <th>ITEMS</th>
+            <th>CATEGORY</th>
+            <th>PRICE</th>
+            <th>QTY</th>
+            <th>SUBTOTAL</th>
+        </tr>
+        @foreach (var item in Model.OrderItems)
+        {
+            var Subtotal = item.Product.Price * item.Quantity;
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Product.ItemID). @Html.DisplayFor(modelItem => item.Product.ItemName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Product.Category.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Product.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    $@Subtotal
+                </td>
+            </tr>
+        }
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                <label>@Html.DisplayNameFor(model => model.SubTotal)</label>
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.SubTotal)
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                <label>GST (15%)</label>
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.GST)
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                <label>@Html.DisplayNameFor(model => model.GrandTotal)</label>
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.GrandTotal)
+            </td>
+        </tr>
+    </table>
+</div>
+<div>
+    <a class="btn btn-default" asp-action="CustomerIndex">Back to List</a>
+</div>
