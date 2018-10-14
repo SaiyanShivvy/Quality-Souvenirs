@@ -13,31 +13,31 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="ItemName" class="control-label"></label>
+                <label asp-for="ItemName" class="control-label">Name</label>
                 <input asp-for="ItemName" class="form-control" />
                 <span asp-validation-for="ItemName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
+                <label asp-for="Description" class="control-label">Description</label>
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
+                <label asp-for="Price" class="control-label">Price</label>
                 <input asp-for="Price" class="form-control" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="FilePath" class="control-label"></label>
+                <label asp-for="FilePath" class="control-label">Image</label>
                 <input asp-for="FilePath" class="form-control" />
                 <span asp-validation-for="FilePath" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CategoryID" class="control-label"></label>
+                <label asp-for="CategoryID" class="control-label">Category</label>
                 <select asp-for="CategoryID" class="form-control" asp-items="ViewBag.CategoryID"></select>
             </div>
             <div class="form-group">
-                <label asp-for="SupplierID" class="control-label"></label>
+                <label asp-for="SupplierID" class="control-label">Supplier</label>
                 <select asp-for="SupplierID" class="form-control" asp-items="ViewBag.SupplierID"></select>
             </div>
             <div class="form-group">

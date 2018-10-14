@@ -20,8 +20,10 @@ namespace QualitySouvenirs.Data
 
             var categories = new Category[]
             {
-                new Category {Name = "Pins"},
-                new Category {Name = "Keychain"}
+                new Category {Name = "T-Shirts"},
+                new Category {Name = "Mugs"},
+                new Category {Name = "Maori Gifts"},
+                new Category {Name = "Pins"}
             };
 
             foreach (var c in categories)
@@ -32,7 +34,9 @@ namespace QualitySouvenirs.Data
 
             var suppliers = new Supplier[]
             {
-                new Supplier {Name = "Supplier A", MobilePhoneNumber = "021-123123", EmailAddress = "fakeEmail@gmail.com" }
+                new Supplier {Name = "Pins'r'Us", MobilePhoneNumber = "021-123123", EmailAddress = "support.pins@email.com" },
+                new Supplier {Name = "Aotearoa Crafts", MobilePhoneNumber = "021-324324", EmailAddress = "aotearoasupport@email.com" },
+                new Supplier {Name = "Regis Gifts", MobilePhoneNumber = "027-129323", EmailAddress = "support.regis@email.com" }
             };
 
             foreach (var s in suppliers)

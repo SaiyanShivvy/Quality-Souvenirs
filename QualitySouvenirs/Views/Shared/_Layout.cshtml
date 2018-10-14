@@ -32,24 +32,20 @@
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Store" asp-action="Index">Products</a></li>
-                    <li><a asp-area="" asp-controller="Categories" asp-action="Index">Categories</a></li>
-                    <li><a asp-area="" asp-controller="Suppliers" asp-action="Index">Suppliers</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
                     @if (User.IsInRole("Admin"))
                     {
-                        <li><a asp-area="" asp-controller="Products" asp-action="Index">Manage Products</a></li>
-                    }
-                    else
-                    {
-
-                    }
-
-                    @*Week 7*@
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <li><a asp-area="" asp-controller="AdminApplicationUsers" asp-action="Index">Members</a></li>
-                        <li><a asp-area="" asp-controller="Orders" asp-action="Index">Orders</a></li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a asp-area="" asp-controller="Products" asp-action="Index">Product Management</a></li>
+                                <li><a asp-area="" asp-controller="Categories" asp-action="Index">Category Management</a></li>
+                                <li><a asp-area="" asp-controller="Suppliers" asp-action="Index">Supplier Management</a></li>
+                                <li><a asp-area="" asp-controller="Orders" asp-action="Index">Order Management</a></li>
+                                <li><a asp-area="" asp-controller="AdminApplicationUsers" asp-action="Index">Member Management</a></li>
+                            </ul>
+                        </li>
                     }
                 </ul>
                 <partial name="_LoginPartial" />
@@ -62,8 +58,14 @@
     <div class="container body-content">
         @RenderBody()
         <hr />
+        <div>
+            @if (!User.IsInRole("Admin"))
+            {
+                @await Component.InvokeAsync("ShoppingCartViewModel")
+            }
+        </div>
         <footer>
-            <p>&copy; 2018 - Quality Souvenirs - An ASP.NET Core Assignment </p>
+            <p>&copy; 2018 - Quality Souvenirs - An ASP.NET Core Assignment</p>
         </footer>
     </div>
 

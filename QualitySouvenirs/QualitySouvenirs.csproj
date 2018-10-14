@@ -27,8 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Admin\" />
-    <Folder Include="Views\Manage\" />
     <Folder Include="Views\ShoppingCart\" />
     <Folder Include="Views\Supplier\" />
   </ItemGroup>
