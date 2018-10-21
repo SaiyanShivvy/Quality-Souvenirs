@@ -32,15 +32,15 @@
 <div class="col-md-9">
     @foreach (var item in Model)
     {
-        var imgUrl = @Href("~/" + item.FilePath);
+        var imgUrl = @Href("~/images/" + item.FilePath);
         var errImg = @Href("~/missing.jpg");
 
         <div class="col-md-2 col-m put_center">
             <!-- Item -->
-            <div style="width: 154px; height:180px; display:table; background:#efefef; margin: 0 auto;">
+            <div style="width: 250px; height:265px; display:block; margin: 0 auto;">
                 <div style="display:table-cell; vertical-align: middle; ">
                     <a asp-action="Details" asp-route-id="@item.ItemID" class="offer-img">
-                        <img class="img-responsive" style="max-width: 154px; max-height:180px;" src="@imgUrl" alt="@item.ItemName" onerror="this.onerror = null; this.src = '@errImg'">
+                        <img class="img-responsive" style="max-width: 250px;" max-height="200px;" src="@imgUrl" alt="@item.ItemName" onerror="this.onerror = null; this.src = '@errImg'">
                     </a>
                 </div>
             </div>
@@ -50,10 +50,12 @@
                     <h6>Category: @Html.DisplayFor(modelItem => item.Category.Name)</h6>
                     <h4>@Html.DisplayFor(modelItem => item.Price)</h4>
                 </div>
+                <br />
                 <div>
                     <a class="btn-primary btn raised" asp-action="AddToCart" asp-controller="ShoppingCart" asp-route-id="@item.ItemID">Add to Cart</a>
                 </div>
             </div>
+            <hr />
         </div>
     }
 </div>

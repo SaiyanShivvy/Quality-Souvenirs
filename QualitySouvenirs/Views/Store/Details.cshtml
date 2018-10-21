@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Product Detail";
-    var imgUrl = @Href("~/" + Model.FilePath);
+    var imgUrl = @Href("~/images/" + Model.FilePath);
     var errImg = @Href("~/missing.jpg");
 }
 
@@ -44,5 +44,5 @@
     </dl>
 </div>
 <div>
-    <a class="btn btn-default" asp-action="Index">Back to List</a>
+    <a class="btn btn-default" href="javascript: history.go(-1)">Take Me Back</a>
 </div>

@@ -10,7 +10,9 @@ namespace QualitySouvenirs.Models
 {
     public class ShoppingCart
     {
+        //https://docs.microsoft.com/en-us/aspnet/mvc/overview/older-versions/mvc-music-store/mvc-music-store-part-8
         public string ShoppingCartID { get; set; }
+
         public const string CartSessionKey = "shoppingCartID";
 
         public static ShoppingCart GetCart(HttpContext context)
@@ -22,7 +24,7 @@ namespace QualitySouvenirs.Models
 
         public void AddToCart(Product product, QualitySouvenirsContext db)
         {
-            //var cartItem = db.CartItems.SingleOrDefault(c => c.CartID == ShoppingCartID && c.Product.ItemID == product.ItemID);
+            //var cartItem = db.CartItems.SingleOrDefault(c => c.CartID == ShoppingCartID && c.CartItemID == product.ItemID);
             //if (cartItem == null)
             //{
             //    cartItem = new CartItem
@@ -39,10 +41,10 @@ namespace QualitySouvenirs.Models
             //    cartItem.ItemCount++;
             //}
             //db.SaveChanges();
-            // Get the matching cart and album instances
+
             var cartItem = db.CartItems.SingleOrDefault(
                 c => c.CartID == ShoppingCartID
-                && c.CartItemID == c.Product.ItemID);
+                && c.CartItemID == product.ItemID);
 
             if (cartItem == null)
             {

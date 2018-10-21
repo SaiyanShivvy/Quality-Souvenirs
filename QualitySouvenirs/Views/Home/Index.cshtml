@@ -58,11 +58,11 @@
                         {
                             <div class="col-md-3 text-center">
                                 <a asp-controller="Product" asp-action="Details" asp-route-id="@item.ItemID">
-                                    <img src="~/images/@item.FilePath" alt="">
+                                    <img class="img-responsive" style="max-width: 250px;" src="~/images/@item.FilePath" alt="">
                                 </a>
                                 <br />
                                 <br />
-                                <a class="btn btn-default" asp-controller="Product" asp-action="IndexForCustomer" asp-route-id="@category.CategoryID">More @category.Name Products <span><i class="fa fa-angle-double-right" aria-hidden="true"></i></span></a>
+                                <a class="btn btn-default" asp-controller="Store" asp-action="Index" asp-route-id="@category.CategoryID">More @category.Name Products <span><i class="fa fa-angle-double-right" aria-hidden="true"></i></span></a>
                             </div>
                             displayedItems.Add(item);
                             // only display one featured item under one category
