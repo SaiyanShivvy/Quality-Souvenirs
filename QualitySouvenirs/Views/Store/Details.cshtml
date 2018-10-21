@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Product Detail";
-    var imgUrl = @Href("~" + Model.FilePath);
+    var imgUrl = @Href("~/" + Model.FilePath);
     var errImg = @Href("~/missing.jpg");
 }
 
@@ -39,7 +39,7 @@
             @Html.DisplayNameFor(model => model.FilePath)
         </dt>
         <dd>
-            <img class="img-responsive" style="max-width: 300px;" src="@imgUrl" alt="Bag Image" onerror="this.onerror = null; this.src = '@errImg'">
+            <img class="img-responsive" style="max-width: 300px;" src="@imgUrl" alt="Item Image" onerror="this.onerror = null; this.src = '@errImg'">
         </dd>
     </dl>
 </div>

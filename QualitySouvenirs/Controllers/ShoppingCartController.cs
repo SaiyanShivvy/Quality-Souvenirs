@@ -34,10 +34,10 @@ namespace QualitySouvenirs.Controllers
         public ActionResult AddToCart(int id)
         {
             // Retrieve the bag from the database
-            var addedBagItem = _context.Products.Single(b => b.ItemID == id);
+            var addedItem = _context.Products.Single(b => b.ItemID == id);
             // Add it to the shopping cart
             var cart = ShoppingCart.GetCart(this.HttpContext);
-            cart.AddToCart(addedBagItem, _context);
+            cart.AddToCart(addedItem, _context);
             // Go back to the main store page for more shopping
             // return RedirectToAction("Index", "MemberTutorials");
             return Redirect(Request.Headers["Referer"].ToString());

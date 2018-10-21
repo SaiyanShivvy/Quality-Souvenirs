@@ -22,9 +22,31 @@ namespace QualitySouvenirs.Models
 
         public void AddToCart(Product product, QualitySouvenirsContext db)
         {
-            var cartItem = db.CartItems.SingleOrDefault(c => c.CartID == ShoppingCartID && c.Product.ItemID == product.ItemID);
+            //var cartItem = db.CartItems.SingleOrDefault(c => c.CartID == ShoppingCartID && c.Product.ItemID == product.ItemID);
+            //if (cartItem == null)
+            //{
+            //    cartItem = new CartItem
+            //    {
+            //        Product = product,
+            //        CartID = ShoppingCartID,
+            //        ItemCount = 1,
+            //        DateCreated = DateTime.Now
+            //    };
+            //    db.CartItems.Add(cartItem);
+            //}
+            //else
+            //{
+            //    cartItem.ItemCount++;
+            //}
+            //db.SaveChanges();
+            // Get the matching cart and album instances
+            var cartItem = db.CartItems.SingleOrDefault(
+                c => c.CartID == ShoppingCartID
+                && c.CartItemID == c.Product.ItemID);
+
             if (cartItem == null)
             {
+                // Create a new cart item if no cart item exists
                 cartItem = new CartItem
                 {
                     Product = product,
@@ -36,8 +58,11 @@ namespace QualitySouvenirs.Models
             }
             else
             {
+                // If the item does exist in the cart,
+                // then add one to the quantity
                 cartItem.ItemCount++;
             }
+            // Save changes
             db.SaveChanges();
         }
 
@@ -73,9 +98,10 @@ namespace QualitySouvenirs.Models
 
         public List<CartItem> GetCartItems(QualitySouvenirsContext db)
         {
-            List<CartItem> cartItems = db.CartItems.Include(ci => ci.Product).ThenInclude(b => b.Category).Where(ci => ci.CartID == ShoppingCartID).ToList();
+            //List<CartItem> cartItems = db.CartItems.Include(i => i.Product).Where(cartItem => cartItem.CartID == ShoppingCartID).ToList();
 
-            return cartItems;
+            //return cartItems;
+            return db.CartItems.Where(cart => cart.CartID == ShoppingCartID).ToList();
         }
 
         public int GetCount(QualitySouvenirsContext db)

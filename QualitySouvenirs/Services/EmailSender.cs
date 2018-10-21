@@ -12,15 +12,10 @@ namespace QualitySouvenirs.Services
     // For more details see https://go.microsoft.com/fwlink/?LinkID=532713
     public class EmailSender : IEmailSender
     {
-        //public Task SendEmailAsync(string email, string subject, string message)
-        //{
-        //    return Task.CompletedTask;
-        //}
-
         public Task SendEmailAsync(string email, string subject, string message)
         {
             var mes = new MimeMessage();
-            mes.From.Add(new MailboxAddress("Test Account", "testuser01@unitectest.onmicrosoft.com"));
+            mes.From.Add(new MailboxAddress("achars05", "achars05@myunitec.ac.nz"));
             mes.To.Add(new MailboxAddress("User", email));
             mes.Subject = subject;
 
@@ -41,7 +36,7 @@ namespace QualitySouvenirs.Services
                 client.AuthenticationMechanisms.Remove("XOAUTH2");
 
                 // Note: only needed if the SMTP server requires authentication
-                client.Authenticate("testuser01@unitectest.onmicrosoft.com", "testTOOL35");
+                client.Authenticate("achars05@myunitec.ac.nz", "18021998");
 
                 client.Send(mes);
                 client.Disconnect(true);

@@ -58,6 +58,12 @@
     <div class="container body-content">
         @RenderBody()
         <hr />
+        <div>
+            @if (!User.IsInRole("Admin"))
+            {
+                @await Component.InvokeAsync("ShoppingCartViewModel")
+            }
+        </div>
         <footer>
             <p>&copy; 2018 - Quality Souvenirs - An ASP.NET Core Assignment</p>
         </footer>
