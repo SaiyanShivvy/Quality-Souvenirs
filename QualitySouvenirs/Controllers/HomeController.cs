@@ -32,14 +32,14 @@ namespace QualitySouvenirs.Controllers
 
         public IActionResult About()
         {
-            ViewData["Message"] = "Your application description page.";
+            ViewData["Message"] = "Thinking about why I made this site?";
 
             return View();
         }
 
         public IActionResult Contact()
         {
-            ViewData["Message"] = "Your contact page.";
+            ViewData["Message"] = "Queries or Feedback? Here's how to reach us!";
 
             return View();
         }

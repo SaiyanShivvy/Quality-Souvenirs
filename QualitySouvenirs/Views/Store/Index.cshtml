@@ -37,10 +37,10 @@
 
         <div class="col-md-2 col-m put_center">
             <!-- Item -->
-            <div style="width: 400px; height:200px; display:table; margin: 0 auto;">
-                <div style="display:table-cell; vertical-align: middle; ">
+            <div style="width: 200px; height:180px; display:table; margin: 0 auto;">
+                <div style="display:table-cell; vertical-align: middle;">
                     <a asp-action="Details" asp-route-id="@item.ItemID" class="offer-img">
-                        <img class="img-responsive" style="max-width: 250px;" max-height="200px;" src="@imgUrl" alt="@item.ItemName" onerror="this.onerror = null; this.src = '@errImg'">
+                        <img class="img-responsive" style="max-width: 130px; max-height:180px;" src="@imgUrl" alt="@item.ItemName" onerror="this.onerror = null; this.src = '@errImg'">
                     </a>
                 </div>
             </div>
@@ -70,7 +70,7 @@
 <div class="col-md-8 col-lg-offset-3" style="text-align:left">
     <a asp-action="Index"
        asp-route-page="@(Model.PageIndex - 1)"
-       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       asp-route-currentFilter="@ViewData[" CurrentFilter"]"
        class="btn btn-default @prevDisabled btn">
         <span class="glyphicon glyphicon-step-backward"></span>Previous
     </a>
@@ -78,7 +78,7 @@
 <div class="col-md-1" style="text-align:right">
     <a asp-action="Index"
        asp-route-page="@(Model.PageIndex + 1)"
-       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       asp-route-currentFilter="@ViewData[" CurrentFilter"]"
        class="btn btn-default @nextDisabled btn">
         Next<span class="glyphicon glyphicon-step-forward"></span>
     </a>
