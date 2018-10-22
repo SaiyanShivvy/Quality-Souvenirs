@@ -33,13 +33,13 @@ namespace QualitySouvenirs.Controllers
         // GET: /Store/AddToCart/5
         public ActionResult AddToCart(int id)
         {
-            // Retrieve the bag from the database
-            var addedItem = _context.Products.Single(b => b.ItemID == id);
+            // Retrieve the item from the database
+            var addedBagItem = _context.Products
+                .Single(p => p.ItemID == id);
             // Add it to the shopping cart
             var cart = ShoppingCart.GetCart(this.HttpContext);
-            cart.AddToCart(addedItem, _context);
+            cart.AddToCart(addedBagItem, _context);
             // Go back to the main store page for more shopping
-            // return RedirectToAction("Index", "MemberTutorials");
             return Redirect(Request.Headers["Referer"].ToString());
         }
 
@@ -50,7 +50,7 @@ namespace QualitySouvenirs.Controllers
             return Redirect(Request.Headers["Referer"].ToString());
         }
 
-        public ActionResult ClearCart()
+        public ActionResult EmptyCart()
         {
             var cart = ShoppingCart.GetCart(this.HttpContext);
             cart.EmptyCart(_context);

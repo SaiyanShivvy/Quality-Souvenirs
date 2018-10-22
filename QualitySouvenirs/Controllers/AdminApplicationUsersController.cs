@@ -32,7 +32,7 @@ namespace QualitySouvenirs.Controllers
         }
 
         // GET: AdminApplicationUsers
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             IEnumerable<ApplicationUser> members = ReturnAllMembers().Result;
             return View(members);
@@ -56,7 +56,24 @@ namespace QualitySouvenirs.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET: AdminApplicationUsers/Edit/5
+        // GET: ApplicationUsers/Details/5
+        public async Task<IActionResult> Details(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var applicationUser = await _context.ApplicationUser.SingleOrDefaultAsync(m => m.Id == id);
+            if (applicationUser == null)
+            {
+                return NotFound();
+            }
+
+            return View(applicationUser);
+        }
+
+        // GET: ApplicationUsers/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -72,12 +89,12 @@ namespace QualitySouvenirs.Controllers
             return View(applicationUser);
         }
 
-        // POST: AdminApplicationUsers/Edit/5
+        // POST: ApplicationUsers/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,AccessFailedCount,Address,ConcurrencyStamp,Email,EmailConfirmed,Enabled,FirstName,HomePhoneNumber,LastName,LockoutEnabled,LockoutEnd,NormalizedEmail,NormalizedUserName,PasswordHash,PhoneNumber,PhoneNumberConfirmed,SecurityStamp,TwoFactorEnabled,UserName,WorkPhoneNumber")] ApplicationUser applicationUser)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,AccessFailedCount,Address,ConcurrencyStamp,Email,EmailConfirmed,Enabled,FirstName,HomePhoneNumber,LastName,LockoutEnabled,LockoutEnd,MobilePhoneNumber,NormalizedEmail,NormalizedUserName,PasswordHash,PhoneNumber,PhoneNumberConfirmed,SecurityStamp,TwoFactorEnabled,UserName,WorkPhoneNumber")] ApplicationUser applicationUser)
         {
             if (id != applicationUser.Id)
             {
@@ -107,7 +124,7 @@ namespace QualitySouvenirs.Controllers
             return View(applicationUser);
         }
 
-        // GET: AdminApplicationUsers/Delete/5
+        // GET: ApplicationUsers/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -124,15 +141,23 @@ namespace QualitySouvenirs.Controllers
             return View(applicationUser);
         }
 
-        // POST: AdminApplicationUsers/Delete/5
+        // POST: ApplicationUsers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var applicationUser = await _context.ApplicationUser.SingleOrDefaultAsync(m => m.Id == id);
-            _context.ApplicationUser.Remove(applicationUser);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            try
+            {
+                var applicationUser = await _context.ApplicationUser.SingleOrDefaultAsync(m => m.Id == id);
+                _context.ApplicationUser.Remove(applicationUser);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            catch (DbUpdateException)
+            {
+                TempData["UserUsed"] = "The User being deleted has orders. Delete those orders before trying again.";
+                return RedirectToAction("Delete");
+            }
         }
 
         private bool ApplicationUserExists(string id)

@@ -30,8 +30,10 @@ namespace QualityBags.ViewComponents
             var viewModel = new ShoppingCartViewModel
             {
                 CartItems = cart.GetCartItems(_context),
-                GrandTotal = cart.GetTotal(_context),
-                TotalCount = cart.GetCount(_context)
+                SubTotal = cart.GetSubtotal(_context),
+                GST = cart.GetTotalGST(_context),
+                GrandTotal = cart.GetGrandTotal(_context),
+                TotalCount = cart.GetTotalCount(_context)
             };
 
             return viewModel;

@@ -51,6 +51,8 @@ namespace QualitySouvenirs.Controllers
             return View();
         }
 
+        //
+        // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -231,6 +233,8 @@ namespace QualitySouvenirs.Controllers
             return View();
         }
 
+        //
+        // GET: /Account/Register
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -239,7 +243,7 @@ namespace QualitySouvenirs.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Address = model.Address, Enabled = true };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, LastName = model.LastName, Address = model.Address, Enabled = true };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -247,13 +251,10 @@ namespace QualitySouvenirs.Controllers
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-                    await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
-
-                    //await _signInManager.SignInAsync(user, isPersistent: false);
-                    //_logger.LogInformation("User created a new account with password.");
-                    //return RedirectToLocal(returnUrl);
-
+                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+                    await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
+                        $"Please confirm your account by copying and pasting this link in your browser:{callbackUrl}");
+                    _logger.LogInformation(3, "User created a new account with password.");
                     return View("ConfirmRegister");
                 }
                 AddErrors(result);
@@ -263,6 +264,8 @@ namespace QualitySouvenirs.Controllers
             return View(model);
         }
 
+        //
+        // POST: /Account/LogOff
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
@@ -272,6 +275,8 @@ namespace QualitySouvenirs.Controllers
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
+        //
+        // POST: /Account/ExternalLogin
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -283,6 +288,8 @@ namespace QualitySouvenirs.Controllers
             return Challenge(properties, provider);
         }
 
+        //
+        // GET: /Account/ExternalLoginCallback
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
@@ -319,6 +326,8 @@ namespace QualitySouvenirs.Controllers
             }
         }
 
+        //
+        // POST: /Account/ExternalLoginConfirmation
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -351,6 +360,7 @@ namespace QualitySouvenirs.Controllers
             return View(nameof(ExternalLogin), model);
         }
 
+        // GET: /Account/ConfirmEmail
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> ConfirmEmail(string userId, string code)
@@ -368,6 +378,8 @@ namespace QualitySouvenirs.Controllers
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
 
+        //
+        // GET: /Account/ForgotPassword
         [HttpGet]
         [AllowAnonymous]
         public IActionResult ForgotPassword()
@@ -375,6 +387,8 @@ namespace QualitySouvenirs.Controllers
             return View();
         }
 
+        //
+        // POST: /Account/ForgotPassword
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -402,6 +416,8 @@ namespace QualitySouvenirs.Controllers
             return View(model);
         }
 
+        //
+        // GET: /Account/ForgotPasswordConfirmation
         [HttpGet]
         [AllowAnonymous]
         public IActionResult ForgotPasswordConfirmation()
@@ -409,6 +425,8 @@ namespace QualitySouvenirs.Controllers
             return View();
         }
 
+        //
+        // GET: /Account/ResetPassword
         [HttpGet]
         [AllowAnonymous]
         public IActionResult ResetPassword(string code = null)
@@ -421,6 +439,8 @@ namespace QualitySouvenirs.Controllers
             return View(model);
         }
 
+        //
+        // POST: /Account/ResetPassword
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -445,6 +465,8 @@ namespace QualitySouvenirs.Controllers
             return View();
         }
 
+        //
+        // GET: /Account/ResetPasswordConfirmation
         [HttpGet]
         [AllowAnonymous]
         public IActionResult ResetPasswordConfirmation()

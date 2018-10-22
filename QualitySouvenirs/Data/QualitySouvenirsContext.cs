@@ -15,6 +15,8 @@ namespace QualitySouvenirs.Data
         {
         }
 
+        public DbSet<ApplicationUser> ApplicationUser { get; set; }
+        public DbSet<ShoppingCart> ShoppingCart { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
@@ -33,8 +35,5 @@ namespace QualitySouvenirs.Data
             modelBuilder.Entity<OrderItem>().ToTable("OrderDetail");
             modelBuilder.Entity<OrderItem>().HasOne(p => p.Order).WithMany(o => o.OrderItems).OnDelete(DeleteBehavior.Cascade);
         }
-
-        public DbSet<QualitySouvenirs.Models.ApplicationUser> ApplicationUser { get; set; }
-        public DbSet<QualitySouvenirs.Models.ShoppingCart> ShoppingCart { get; set; }
     }
 }

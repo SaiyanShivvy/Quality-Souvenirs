@@ -5,33 +5,36 @@
 <h2>Edit</h2>
 <form asp-action="Edit">
     <div class="form-horizontal">
-        <h4>Account Details</h4>
+        <h4>ApplicationUser</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="Id" />
-        <input type="hidden" asp-for="AccessFailedCount" />
-        <input type="hidden" asp-for="ConcurrencyStamp" class="form-control" />
-        <input type="hidden" asp-for="PhoneNumberConfirmed" />
-        <input type="hidden" asp-for="SecurityStamp" class="form-control" />
-        <input type="hidden" asp-for="TwoFactorEnabled" />
-        <input type="hidden" asp-for="LockoutEnabled" />
-        <input type="hidden" asp-for="LockoutEnd" class="form-control" />
-        <input type="hidden" asp-for="NormalizedEmail" class="form-control" />
-        <input type="hidden" asp-for="NormalizedUserName" class="form-control" />
-        <input type="hidden" asp-for="PasswordHash" class="form-control" />
-
+        <div class="form-group">
+            <label asp-for="AccessFailedCount" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="AccessFailedCount" class="form-control" />
+                <span asp-validation-for="AccessFailedCount" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Address" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ConcurrencyStamp" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ConcurrencyStamp" class="form-control" />
+                <span asp-validation-for="ConcurrencyStamp" class="text-danger" />
+            </div>
+        </div>
         <div class="form-group">
             <label asp-for="Email" class="col-md-2 control-label"></label>
             <div class="col-md-10">
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="UserName" class="col-md-2 control-label">Nick Name</label>
-            <div class="col-md-10">
-                <input asp-for="UserName" class="form-control" />
-                <span asp-validation-for="UserName" class="text-danger" />
             </div>
         </div>
         <div class="form-group">
@@ -51,32 +54,67 @@
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="FirstName" class="col-md-2 control-label">First Name</label>
+            <label asp-for="FirstName" class="col-md-2 control-label"></label>
             <div class="col-md-10">
                 <input asp-for="FirstName" class="form-control" />
                 <span asp-validation-for="FirstName" class="text-danger" />
             </div>
         </div>
-
         <div class="form-group">
-            <label asp-for="LastName" class="col-md-2 control-label">Last Name</label>
+            <label asp-for="LastName" class="col-md-2 control-label"></label>
             <div class="col-md-10">
                 <input asp-for="LastName" class="form-control" />
                 <span asp-validation-for="LastName" class="text-danger" />
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="MobilePhoneNumber" class="col-md-2 control-label">Mobile Number</label>
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="LockoutEnabled" />
+                    <label asp-for="LockoutEnabled"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="LockoutEnd" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="LockoutEnd" class="form-control" />
+                <span asp-validation-for="LockoutEnd" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="MobilePhoneNumber" class="col-md-2 control-label"></label>
             <div class="col-md-10">
                 <input asp-for="MobilePhoneNumber" class="form-control" />
                 <span asp-validation-for="MobilePhoneNumber" class="text-danger" />
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="Address" class="col-md-2 control-label"></label>
+            <label asp-for="NormalizedEmail" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger" />
+                <input asp-for="NormalizedEmail" class="form-control" />
+                <span asp-validation-for="NormalizedEmail" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="NormalizedUserName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="NormalizedUserName" class="form-control" />
+                <span asp-validation-for="NormalizedUserName" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PhoneNumber" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="UserName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger" />
             </div>
         </div>
         <div class="form-group">
@@ -86,6 +124,7 @@
         </div>
     </div>
 </form>
+
 <div>
     <a asp-action="Index">Back to List</a>
 </div>

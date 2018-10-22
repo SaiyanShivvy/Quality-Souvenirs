@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MailKit.Net.Smtp;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using MimeKit;
 
 namespace QualitySouvenirs.Services
@@ -15,11 +14,11 @@ namespace QualitySouvenirs.Services
         public Task SendEmailAsync(string email, string subject, string message)
         {
             var mes = new MimeMessage();
-            mes.From.Add(new MailboxAddress("achars05", "achars05@myunitec.ac.nz"));
+            mes.From.Add(new MailboxAddress("Shivneel Achari", "achars05@myunitec.ac.nz"));
             mes.To.Add(new MailboxAddress("User", email));
             mes.Subject = subject;
 
-            mes.Body = new TextPart("html")
+            mes.Body = new TextPart("plain")
             {
                 Text = message
             };
@@ -42,7 +41,7 @@ namespace QualitySouvenirs.Services
                 client.Disconnect(true);
             }
             // Plug in your email service here to send an email.
-            return Task.CompletedTask;
+            return Task.FromResult(0);
         }
     }
 }

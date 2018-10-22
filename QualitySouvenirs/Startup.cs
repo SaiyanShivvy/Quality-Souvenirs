@@ -55,6 +55,7 @@ options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
+
             services.AddMvc()
                 .AddSessionStateTempDataProvider();
             services.AddSession();
