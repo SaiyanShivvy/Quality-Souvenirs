@@ -16,9 +16,9 @@ namespace QualitySouvenirs.Controllers
     [Authorize(Roles = "Member")]
     public class ShoppingCartController : Controller
     {
-        private QualitySouvenirsContext _context;
+        private ApplicationDbContext _context;
 
-        public ShoppingCartController(QualitySouvenirsContext context)
+        public ShoppingCartController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -34,11 +34,11 @@ namespace QualitySouvenirs.Controllers
         public ActionResult AddToCart(int id)
         {
             // Retrieve the item from the database
-            var addedBagItem = _context.Products
+            var addItem = _context.Products
                 .Single(p => p.ItemID == id);
             // Add it to the shopping cart
             var cart = ShoppingCart.GetCart(this.HttpContext);
-            cart.AddToCart(addedBagItem, _context);
+            cart.AddToCart(addItem, _context);
             // Go back to the main store page for more shopping
             return Redirect(Request.Headers["Referer"].ToString());
         }

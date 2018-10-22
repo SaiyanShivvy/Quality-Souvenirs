@@ -10,10 +10,8 @@ namespace QualitySouvenirs.Models
 {
     public class ShoppingCart
     {
-        //https://docs.microsoft.com/en-us/aspnet/mvc/overview/older-versions/mvc-music-store/mvc-music-store-part-8
         public string ShoppingCartID { get; set; }
-
-        public const string CartSessionKey = "shoppingCartID";
+        public const string CartSessionKey = "cartID";
 
         public static ShoppingCart GetCart(HttpContext context)
         {
@@ -22,7 +20,7 @@ namespace QualitySouvenirs.Models
             return cart;
         }
 
-        public void AddToCart(Product product, QualitySouvenirsContext db)
+        public void AddToCart(Product product, ApplicationDbContext db)
         {
             var cartItem = db.CartItems.SingleOrDefault(
                 c => c.CartID == ShoppingCartID
@@ -50,7 +48,7 @@ namespace QualitySouvenirs.Models
             db.SaveChanges();
         }
 
-        public int RemoveFromCart(int id, QualitySouvenirsContext db)
+        public int RemoveFromCart(int id, ApplicationDbContext db)
         {
             var cartItem = db.CartItems.SingleOrDefault(cart => cart.CartID == ShoppingCartID && cart.Product.ItemID == id);
             int itemCount = 0;
@@ -70,7 +68,7 @@ namespace QualitySouvenirs.Models
             return itemCount;
         }
 
-        public void EmptyCart(QualitySouvenirsContext db)
+        public void EmptyCart(ApplicationDbContext db)
         {
             var cartItems = db.CartItems.Where(cart => cart.CartID == ShoppingCartID);
             foreach (var cartItem in cartItems)
@@ -80,14 +78,21 @@ namespace QualitySouvenirs.Models
             db.SaveChanges();
         }
 
-        public int GetTotalCount(QualitySouvenirsContext db)
+        public List<CartItem> GetCartItems(ApplicationDbContext db)
+        {
+            //List<CartItem> cartItems = db.CartItems.Include(i => i.Product).ThenInclude(b => b.Category).Where(ci => ci.CartID == ShoppingCartID).ToList();
+            //return cartItems;
+            return db.CartItems.Where(cart => cart.CartID == ShoppingCartID).ToList();
+        }
+
+        public int GetTotalCount(ApplicationDbContext db)
         {
             int? count =
                 (from cartItems in db.CartItems where cartItems.CartID == ShoppingCartID select (int?)cartItems.ItemCount).Sum();
             return count ?? 0;
         }
 
-        public decimal GetSubtotal(QualitySouvenirsContext db)
+        public decimal GetSubtotal(ApplicationDbContext db)
         {
             decimal? subtotal = (from cartItem in db.CartItems
                                  where cartItem.CartID == ShoppingCartID
@@ -95,13 +100,13 @@ namespace QualitySouvenirs.Models
             return subtotal ?? decimal.Zero;
         }
 
-        public decimal GetTotalGST(QualitySouvenirsContext db)
+        public decimal GetTotalGST(ApplicationDbContext db)
         {
             decimal? totalGST = GetSubtotal(db) * Convert.ToDecimal(0.15);
             return totalGST ?? decimal.Zero;
         }
 
-        public decimal GetGrandTotal(QualitySouvenirsContext db)
+        public decimal GetGrandTotal(ApplicationDbContext db)
         {
             decimal? totalAmount = GetSubtotal(db) * Convert.ToDecimal(1.15);
             return totalAmount ?? decimal.Zero;
@@ -115,15 +120,6 @@ namespace QualitySouvenirs.Models
                 context.Session.SetString(CartSessionKey, tempCartId.ToString());
             }
             return context.Session.GetString(CartSessionKey).ToString();
-        }
-
-        public List<CartItem> GetCartItems(QualitySouvenirsContext db)
-        {
-            //List<CartItem> cartItems = db.CartItems.Include(ci => ci.Product).Include(b => b.Product.Category).Where(ci => ci.CartID == ShoppingCartID).ToList();
-            //return cartItems;
-
-            return db.CartItems.Where(
-                c => c.CartID == ShoppingCartID).ToList();
         }
     }
 }

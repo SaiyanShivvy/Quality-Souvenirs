@@ -41,7 +41,7 @@ namespace QualitySouvenirs.Services
                 client.Disconnect(true);
             }
             // Plug in your email service here to send an email.
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
     }
 }

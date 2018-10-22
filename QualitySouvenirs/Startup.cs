@@ -61,6 +61,13 @@ options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddSession();
 
             services.AddMvc();
+
+            services.AddSession(options =>
+            {
+                // Set a short timeout for easy testing.
+                options.IdleTimeout = TimeSpan.FromMinutes(5);
+                options.CookieHttpOnly = true;
+            });
         }
 
         public class EmailSender : IEmailSender
@@ -74,6 +81,8 @@ options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public async void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
         {
+            app.UseSession();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -88,8 +97,6 @@ options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseCookiePolicy();
-
-            app.UseSession();
 
             app.UseMvc(routes =>
             {

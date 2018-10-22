@@ -7,13 +7,13 @@ using QualitySouvenirs.Models;
 using QualitySouvenirs.Models.ShoppingCartViewModels;
 using Microsoft.AspNetCore.Mvc;
 
-namespace QualityBags.ViewComponents
+namespace QualitySouvenirs.ViewComponents
 {
     public class ShoppingCartViewModelViewComponent : ViewComponent
     {
-        private readonly QualitySouvenirsContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public ShoppingCartViewModelViewComponent(QualitySouvenirsContext context)
+        public ShoppingCartViewModelViewComponent(ApplicationDbContext context)
         {
             _context = context;
         }

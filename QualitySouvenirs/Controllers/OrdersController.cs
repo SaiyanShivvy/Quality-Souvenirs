@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,113 +13,100 @@ using QualitySouvenirs.Models;
 
 namespace QualitySouvenirs.Controllers
 {
+    [Authorize(Roles = "Admin,Member")]
     public class OrdersController : Controller
     {
-        private readonly QualitySouvenirsContext _context;
+        private readonly ApplicationDbContext _context;
+        private UserManager<ApplicationUser> _userManager;
 
-        public OrdersController(QualitySouvenirsContext context)
+        public OrdersController(ApplicationDbContext context)
         {
             _context = context;
         }
 
         // GET: Orders
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Orders.ToListAsync());
-        }
-
-        // GET: Orders/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var order = await _context.Orders
-                .FirstOrDefaultAsync(m => m.OrderID == id);
-            if (order == null)
-            {
-                return NotFound();
-            }
-
-            return View(order);
+            return View(await _context.Orders.Include(i => i.User).AsNoTracking().ToListAsync());
         }
 
         // GET: Orders/Create
+        [Authorize(Roles = "Member")]
         public IActionResult Create()
         {
             return View();
         }
 
         // POST: Orders/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("OrderID,Date,OrderStatus,GST,GrandTotal,SubTotal")] Order order)
+        [Authorize(Roles = "Member")]
+        public async Task<IActionResult> Create([Bind("City,Country,FirstName,LastName,Phone,PostalCode,State")] Order order)
         {
+            ApplicationUser user = await _userManager.GetUserAsync(User);
+
             if (ModelState.IsValid)
             {
-                _context.Add(order);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                ShoppingCart cart = ShoppingCart.GetCart(this.HttpContext);
+                List<CartItem> items = cart.GetCartItems(_context);
+                List<OrderItem> details = new List<OrderItem>();
+                foreach (CartItem item in items)
+                {
+                    OrderItem detail = CreateOrderDetailForThisItem(item);
+                    detail.Order = order;
+                    details.Add(detail);
+                    _context.Add(detail);
+                }
+
+                order.User = user;
+                order.Date = DateTime.Today;
+                order.GrandTotal = ShoppingCart.GetCart(this.HttpContext).GetGrandTotal(_context);
+                order.OrderItems = details;
+                _context.SaveChanges();
+
+                return RedirectToAction("Purchased", new RouteValueDictionary(
+                new { action = "Purchased", id = order.OrderID }));
             }
+
             return View(order);
         }
 
-        // GET: Orders/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        private OrderItem CreateOrderDetailForThisItem(CartItem item)
+        {
+            OrderItem detail = new OrderItem();
+
+            detail.Quantity = item.ItemCount;
+            detail.Product = item.Product;
+            detail.OrderItemPrice = item.Product.Price;
+
+            return detail;
+        }
+
+        public async Task<IActionResult> Purchased(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var order = await _context.Orders.FindAsync(id);
+            var order = await _context.Orders.Include(i => i.User).AsNoTracking().SingleOrDefaultAsync(m => m.OrderID == id);
             if (order == null)
             {
                 return NotFound();
             }
-            return View(order);
-        }
 
-        // POST: Orders/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("OrderID,Date,OrderStatus,GST,GrandTotal,SubTotal")] Order order)
-        {
-            if (id != order.OrderID)
-            {
-                return NotFound();
-            }
+            var details = _context.OrderItems.Where(detail => detail.Order.OrderID == order.OrderID).Include(detail => detail.Product).ToList();
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(order);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!OrderExists(order.OrderID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
+            order.OrderItems = details;
+            ShoppingCart.GetCart(this.HttpContext).EmptyCart(_context);
             return View(order);
         }
 
         // GET: Orders/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -125,11 +115,17 @@ namespace QualitySouvenirs.Controllers
             }
 
             var order = await _context.Orders
-                .FirstOrDefaultAsync(m => m.OrderID == id);
+                .Include(i => i.User)
+                .AsNoTracking()
+                .SingleOrDefaultAsync(m => m.OrderID == id);
+
             if (order == null)
             {
                 return NotFound();
             }
+
+            var details = _context.OrderItems.Where(detail => detail.Order.OrderID == order.OrderID).Include(detail => detail.Product).ToList();
+            order.OrderItems = details;
 
             return View(order);
         }
@@ -137,17 +133,13 @@ namespace QualitySouvenirs.Controllers
         // POST: Orders/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var order = await _context.Orders.FindAsync(id);
+            var order = await _context.Orders.SingleOrDefaultAsync(m => m.OrderID == id);
             _context.Orders.Remove(order);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool OrderExists(int id)
-        {
-            return _context.Orders.Any(e => e.OrderID == id);
         }
     }
 }

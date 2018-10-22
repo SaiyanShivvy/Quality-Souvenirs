@@ -6,16 +6,16 @@
 
 <h2>Our Products</h2>
 
-@*<div class="col-md-offset-3 col-md-9" style="text-align:right">
-        <form asp-action="Index" method="get">
-            <div class="form-actions no-color">
-                <p>
-                    <input type="text" style="width:200px;" name="SearchString" placeholder="Find by name" value="@ViewData["currentFilter"]" />
-                    <input type="submit" value="Search" class="btn btn-default" /> |
-                </p>
-            </div>
-        </form>
-    </div>*@
+<div class="col-md-offset-3 col-md-9" style="text-align:right">
+    <form asp-action="Index" method="get">
+        <div class="form-actions no-color">
+            <p>
+                <input type="text" style="width:200px;" name="SearchString" placeholder="Find by name" value="@ViewData["currentFilter"]" />
+                <input type="submit" value="Search" class="btn btn-default" /> |
+            </p>
+        </div>
+    </form>
+</div>
 <div class="col-md-3">
     <div class="list-group" id="categories">
         <a class="list-group-item" asp-action="Index" asp-route-id="">All Categories</a>
@@ -37,7 +37,7 @@
 
         <div class="col-md-2 col-m put_center">
             <!-- Item -->
-            <div style="width: 250px; height:265px; display:block; margin: 0 auto;">
+            <div style="width: 400px; height:200px; display:table; margin: 0 auto;">
                 <div style="display:table-cell; vertical-align: middle; ">
                     <a asp-action="Details" asp-route-id="@item.ItemID" class="offer-img">
                         <img class="img-responsive" style="max-width: 250px;" max-height="200px;" src="@imgUrl" alt="@item.ItemName" onerror="this.onerror = null; this.src = '@errImg'">

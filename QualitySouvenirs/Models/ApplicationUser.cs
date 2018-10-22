@@ -15,6 +15,14 @@ namespace QualitySouvenirs.Models
 
         public string FirstName { get; set; }
 
+        public string FullName
+        {
+            get
+            {
+                return FirstName + " " + LastName;
+            }
+        }
+
         public string MobilePhoneNumber { get; set; }
 
         public bool Enabled { get; set; }

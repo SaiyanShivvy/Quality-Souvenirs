@@ -243,7 +243,7 @@ namespace QualitySouvenirs.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, LastName = model.LastName, Address = model.Address, Enabled = true };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Address = model.Address, Enabled = true };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -251,10 +251,13 @@ namespace QualitySouvenirs.Controllers
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                    await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
-                        $"Please confirm your account by copying and pasting this link in your browser:{callbackUrl}");
-                    _logger.LogInformation(3, "User created a new account with password.");
+                    var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+                    await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+
+                    //await _signInManager.SignInAsync(user, isPersistent: false);
+                    //_logger.LogInformation("User created a new account with password.");
+                    //return RedirectToLocal(returnUrl);
+
                     return View("ConfirmRegister");
                 }
                 AddErrors(result);
